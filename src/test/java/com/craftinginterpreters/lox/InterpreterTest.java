@@ -37,6 +37,35 @@ class InterpreterTest {
         runExpectingOutput(program, "2\n");
     }
 
+    @Test
+    void testNestedBlocks() {
+        var program = """
+                var a = "global a";
+                var b = "global b";
+                var c = "global c";
+                {
+                  var a = "outer a";
+                  var b = "outer b";
+                  {
+                    var a = "inner a";
+                    print a;
+                    print b;
+                    print c;
+                  }
+                  print a;
+                  print b;
+                  print c;
+                }
+                print a;
+                print b;
+                print c;
+                """;
+        runExpectingOutput(program,
+                "inner a\nouter b\nglobal c\n" +
+                "outer a\nouter b\nglobal c\n" +
+                "global a\nglobal b\nglobal c\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());

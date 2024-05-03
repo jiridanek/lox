@@ -38,6 +38,11 @@ class ParserTest {
             Assertions.assertEquals(1, parsed.size());
             return AstPrinter.stringify(parsed.getFirst().accept(new Stmt.Visitor<>() {
                 @Override
+                public Expr visitBlockStmt(Stmt.Block stmt) {
+                    throw new AssertionError("Should not reach here");
+                }
+
+                @Override
                 public Expr visitExpressionStmt(Stmt.Expression stmt) {
                     return stmt.expression;
                 }
