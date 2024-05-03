@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 class InterpreterTest {
     @Test
@@ -64,6 +67,36 @@ class InterpreterTest {
                 "inner a\nouter b\nglobal c\n" +
                 "outer a\nouter b\nglobal c\n" +
                 "global a\nglobal b\nglobal c\n");
+    }
+
+    @Test
+    void testFibonacciFor() {
+        Supplier<ArrayList<Integer>> fib = () -> {
+            var result = new ArrayList<Integer>();
+
+            var a = 0;
+            int temp;
+
+            for (var b = 1; a < 10_000; b = temp + b) {
+                result.add(a);
+                temp = a;
+                a = b;
+            }
+
+            return result;
+        };
+
+        var program = """
+                var a = 0;
+                var temp;
+
+                for (var b = 1; a < 10000; b = temp + b) {
+                  print a;
+                  temp = a;
+                  a = b;
+                }
+                """;
+        runExpectingOutput(program, fib.get().stream().map(Object::toString).collect(Collectors.joining("\n")) + "\n");
     }
 
     private static void runExpectingOutput(String program, String expected) {
