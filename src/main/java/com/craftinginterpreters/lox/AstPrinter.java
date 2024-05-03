@@ -28,6 +28,11 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitLogicalExpr(Expr.Logical expr) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return parenthesize(expr.operator.lexeme, expr.right);
     }
