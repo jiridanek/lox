@@ -61,6 +61,11 @@ class ParserTest {
                 public Expr visitVarStmt(Stmt.Var stmt) {
                     throw new AssertionError("Should not reach here");
                 }
+
+                @Override
+                public Expr visitWhileStmt(Stmt.While stmt) {
+                    throw new AssertionError("Should not reach here");
+                }
             }));
         }
         return null;
