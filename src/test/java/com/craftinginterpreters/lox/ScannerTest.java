@@ -2,6 +2,9 @@ package com.craftinginterpreters.lox;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static com.craftinginterpreters.lox.TokenType.*;
@@ -41,5 +44,20 @@ public class ScannerTest {
 
                 new Token(EOF, "", null, 4)
         ));
+    }
+
+    @Test
+    void testSampleFiles() throws IOException {
+        var srcs = Paths.get("src/main/lox");
+        Files.list(srcs).forEach((src) -> {
+            try {
+                var str = Files.readString(src);
+                var scanner = new Scanner(str);
+                var tokens = scanner.scanTokens();
+                System.out.println(src + ", Tokens: " + tokens);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

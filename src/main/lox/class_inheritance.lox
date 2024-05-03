@@ -1,0 +1,15 @@
+class Brunch < Breakfast {
+  drink() {
+    print "How about a Bloody Mary?";
+  }
+}
+
+var benedict = Brunch("ham", "English muffin");
+benedict.serve("Noble Reader");
+
+class Brunch < Breakfast {
+  init(meat, bread, drink) {
+    super.init(meat, bread);
+    this.drink = drink;
+  }
+}
