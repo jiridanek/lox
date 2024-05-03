@@ -3,32 +3,7 @@ package com.craftinginterpreters.lox;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.craftinginterpreters.lox.TokenType.BANG;
-import static com.craftinginterpreters.lox.TokenType.BANG_EQUAL;
-import static com.craftinginterpreters.lox.TokenType.EOF;
-import static com.craftinginterpreters.lox.TokenType.EQUAL;
-import static com.craftinginterpreters.lox.TokenType.EQUAL_EQUAL;
-import static com.craftinginterpreters.lox.TokenType.FALSE;
-import static com.craftinginterpreters.lox.TokenType.GREATER;
-import static com.craftinginterpreters.lox.TokenType.GREATER_EQUAL;
-import static com.craftinginterpreters.lox.TokenType.IDENTIFIER;
-import static com.craftinginterpreters.lox.TokenType.LEFT_BRACE;
-import static com.craftinginterpreters.lox.TokenType.LEFT_PAREN;
-import static com.craftinginterpreters.lox.TokenType.LESS;
-import static com.craftinginterpreters.lox.TokenType.LESS_EQUAL;
-import static com.craftinginterpreters.lox.TokenType.MINUS;
-import static com.craftinginterpreters.lox.TokenType.NIL;
-import static com.craftinginterpreters.lox.TokenType.NUMBER;
-import static com.craftinginterpreters.lox.TokenType.PLUS;
-import static com.craftinginterpreters.lox.TokenType.PRINT;
-import static com.craftinginterpreters.lox.TokenType.RIGHT_BRACE;
-import static com.craftinginterpreters.lox.TokenType.RIGHT_PAREN;
-import static com.craftinginterpreters.lox.TokenType.SEMICOLON;
-import static com.craftinginterpreters.lox.TokenType.SLASH;
-import static com.craftinginterpreters.lox.TokenType.STAR;
-import static com.craftinginterpreters.lox.TokenType.STRING;
-import static com.craftinginterpreters.lox.TokenType.TRUE;
-import static com.craftinginterpreters.lox.TokenType.VAR;
+import static com.craftinginterpreters.lox.TokenType.*;
 
 class Parser {
     private static class ParseError extends RuntimeException {
@@ -70,13 +45,29 @@ class Parser {
     }
 
     // statement      → exprStmt
+    //                | ifStmt
     //                | printStmt
     //                | block ;
     private Stmt statement() {
+        if (match(IF)) return ifStatement();
         if (match(PRINT)) return printStatement();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
+    }
+
+    private Stmt ifStatement() {
+        consume(LEFT_PAREN, "Expect '(' after 'if'.");
+        Expr condition = expression();
+        consume(RIGHT_PAREN, "Expect ')' after if condition.");
+
+        Stmt thenBranch = statement();
+        Stmt elseBranch = null;
+        if (match(ELSE)) {
+            elseBranch = statement();
+        }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
     }
 
     // printStmt      → "print" expression ";" ;

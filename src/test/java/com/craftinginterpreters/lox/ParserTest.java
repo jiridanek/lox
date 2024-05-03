@@ -48,6 +48,11 @@ class ParserTest {
                 }
 
                 @Override
+                public Expr visitIfStmt(Stmt.If stmt) {
+                    throw new AssertionError("Should not reach here");
+                }
+
+                @Override
                 public Expr visitPrintStmt(Stmt.Print stmt) {
                     throw new AssertionError("Should not reach here");
                 }
