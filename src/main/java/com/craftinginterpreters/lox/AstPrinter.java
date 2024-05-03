@@ -40,6 +40,10 @@ class AstPrinter implements Expr.Visitor<String> {
         return builder.toString();
     }
 
+    public static String stringify(Expr expr) {
+        return new AstPrinter().print(expr);
+    }
+
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(
                 new Expr.Unary(
