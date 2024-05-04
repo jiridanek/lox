@@ -99,6 +99,18 @@ class InterpreterTest {
         runExpectingOutput(program, fib.get().stream().map(Object::toString).collect(Collectors.joining("\n")) + "\n");
     }
 
+    @Test
+    void testRunFunction() {
+        var program = """
+                fun sayHi(first, last) {
+                  print "Hi, " + first + " " + last + "!";
+                }
+
+                sayHi("Dear", "Reader");
+                """;
+        runExpectingOutput(program, "Hi, Dear Reader!\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
