@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -109,6 +110,31 @@ class InterpreterTest {
                 sayHi("Dear", "Reader");
                 """;
         runExpectingOutput(program, "Hi, Dear Reader!\n");
+    }
+
+    private int fib(int n) {
+        if (n <= 1) return n;
+        return fib(n - 2) + fib(n - 1);
+    }
+
+    @Test
+    void testFibonacciRec() {
+        var result = new ArrayList<Integer>();
+        for (var i = 0; i < 20; i = i + 1) {
+            result.add(fib(i));
+        }
+
+        var program = """
+                fun fib(n) {
+                  if (n <= 1) return n;
+                  return fib(n - 2) + fib(n - 1);
+                }
+
+                for (var i = 0; i < 20; i = i + 1) {
+                  print fib(i);
+                }
+                """;
+        runExpectingOutput(program, result.stream().map(Objects::toString).collect(Collectors.joining("\n")) + "\n");
     }
 
     private static void runExpectingOutput(String program, String expected) {
