@@ -137,6 +137,26 @@ class InterpreterTest {
         runExpectingOutput(program, result.stream().map(Objects::toString).collect(Collectors.joining("\n")) + "\n");
     }
 
+    @Test
+    void testClosure() {
+        var program = """
+                fun makeCounter() {
+                  var i = 0;
+                  fun count() {
+                    i = i + 1;
+                    print i;
+                  }
+
+                  return count;
+                }
+
+                var counter = makeCounter();
+                counter(); // "1".
+                counter(); // "2".
+                """;
+        runExpectingOutput(program, "1\n2\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
