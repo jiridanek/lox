@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -161,6 +162,7 @@ class InterpreterTest {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
         var interpreter = new Interpreter();
+        var resolver = new Resolver(interpreter);
 
         var stdout = System.out;
         try {
@@ -168,7 +170,9 @@ class InterpreterTest {
             var out = new PrintStream(data);
             System.setOut(out);
 
-            interpreter.interpret(parser.parse());
+            List<Stmt> statements = parser.parse();
+            resolver.resolve(statements);
+            interpreter.interpret(statements);
             Assertions.assertEquals(expected, data.toString());
         } finally {
             System.setOut(stdout);
