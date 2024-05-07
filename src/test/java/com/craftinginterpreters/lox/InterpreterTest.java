@@ -181,6 +181,17 @@ class InterpreterTest {
         runExpectingOutput(program, "Bagel instance\n");
     }
 
+    @Test
+    void testBasicClassProperties() {
+        var program = """
+                class Bagel {}
+                var bagel = Bagel();
+                bagel.size = 42;
+                print bagel.size;
+                """;
+        runExpectingOutput(program, "42\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());

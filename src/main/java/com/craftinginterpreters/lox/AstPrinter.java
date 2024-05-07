@@ -22,6 +22,11 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitGetExpr(Expr.Get expr) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
     public String visitGroupingExpr(Expr.Grouping expr) {
         return parenthesize("group", expr.expression);
     }
@@ -34,6 +39,11 @@ class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitLogicalExpr(Expr.Logical expr) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public String visitSetExpr(Expr.Set expr) {
         throw new RuntimeException("Not implemented");
     }
 
