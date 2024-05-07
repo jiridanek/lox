@@ -171,6 +171,16 @@ class InterpreterTest {
         runExpectingOutput(program, "DevonshireCream\n");
     }
 
+    @Test
+    void testBasicClassInstance() {
+        var program = """
+                class Bagel {}
+                var bagel = Bagel();
+                print bagel; // Prints "Bagel instance".
+                """;
+        runExpectingOutput(program, "Bagel instance\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
