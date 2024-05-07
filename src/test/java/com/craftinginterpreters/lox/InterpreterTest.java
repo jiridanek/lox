@@ -206,6 +206,21 @@ class InterpreterTest {
         runExpectingOutput(program, "Crunch crunch crunch!\n");
     }
 
+    @Test
+    void testBasicClassThis() {
+        var program = """
+                class Egotist {
+                  speak() {
+                    print this;
+                  }
+                }
+
+                var method = Egotist().speak;
+                method();
+                """;
+        runExpectingOutput(program, "Egotist instance\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
