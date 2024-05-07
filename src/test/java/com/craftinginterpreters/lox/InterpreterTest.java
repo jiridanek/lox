@@ -192,6 +192,20 @@ class InterpreterTest {
         runExpectingOutput(program, "42\n");
     }
 
+    @Test
+    void testBasicClassMethodCall() {
+        var program = """
+                class Bacon {
+                  eat() {
+                    print "Crunch crunch crunch!";
+                  }
+                }
+
+                Bacon().eat();
+                """;
+        runExpectingOutput(program, "Crunch crunch crunch!\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
