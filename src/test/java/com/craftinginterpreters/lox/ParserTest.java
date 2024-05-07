@@ -43,6 +43,11 @@ class ParserTest {
                 }
 
                 @Override
+                public Expr visitClassStmt(Stmt.Class stmt) {
+                    throw new AssertionError("Should not reach here");
+                }
+
+                @Override
                 public Expr visitExpressionStmt(Stmt.Expression stmt) {
                     return stmt.expression;
                 }

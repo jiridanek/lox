@@ -158,6 +158,19 @@ class InterpreterTest {
         runExpectingOutput(program, "1\n2\n");
     }
 
+    @Test
+    void testBasicClass() {
+        var program = """
+                class DevonshireCream {
+                  serveOn() {
+                    return "Scones";
+                  }
+                }
+                print DevonshireCream; // Prints "DevonshireCream".
+                """;
+        runExpectingOutput(program, "DevonshireCream\n");
+    }
+
     private static void runExpectingOutput(String program, String expected) {
         var scanner = new Scanner(program);
         var parser = new Parser(scanner.scanTokens());
